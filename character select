@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Character Select</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    overflow:hidden;
+    font-family:Arial, sans-serif;
+    background:
+        linear-gradient(to bottom,#5fd1ff 0%,#95ecff 45%,#0077b6 100%);
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.title{
+    position:absolute;
+    top:30px;
+    width:100%;
+    text-align:center;
+    color:white;
+    font-size:52px;
+    font-weight:900;
+    text-shadow:
+        4px 4px 0 #003566,
+        8px 8px 12px rgba(0,0,0,0.4);
+}
+
+/* =========================
+   CHARACTER CONTAINER
+========================= */
+
+.characterContainer{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    display:flex;
+    gap:30px;
+}
+
+/* =========================
+   CHARACTER CARD
+========================= */
+
+.characterCard{
+    width:170px;
+    height:260px;
+
+    background:
+        linear-gradient(to bottom,#ffffff,#dff7ff);
+
+    border-radius:24px;
+
+    border:6px solid transparent;
+
+    transition:0.18s;
+
+    position:relative;
+
+    box-shadow:
+        0 10px 18px rgba(0,0,0,0.35);
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+/* SELECTED CARD */
+.characterCard.selected{
+
+    transform:translateY(-18px) scale(1.08);
+
+    border-color:#ffd60a;
+
+    box-shadow:
+        0 0 25px #ffe066,
+        0 12px 25px rgba(0,0,0,0.45);
+}
+
+/* CHARACTER ICON */
+.characterIcon{
+    font-size:90px;
+    margin-bottom:18px;
+}
+
+/* NAME */
+.characterName{
+    font-size:32px;
+    font-weight:bold;
+    color:#003566;
+}
+
+/* INFO */
+.infoText{
+    position:absolute;
+    bottom:45px;
+    width:100%;
+    text-align:center;
+    font-size:24px;
+    color:white;
+    text-shadow:2px 2px 5px black;
+}
+
+/* WATER */
+.water{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:120px;
+    background:
+        linear-gradient(to bottom,#0096c7,#023e8a);
+}
+
+/* WAVES */
+.wave{
+    position:absolute;
+    width:200%;
+    height:100px;
+    background:rgba(255,255,255,0.15);
+    border-radius:45%;
+    animation:waveMove 10s linear infinite;
+}
+
+.wave:nth-child(2){
+    top:20px;
+    opacity:0.5;
+    animation-duration:15s;
+}
+
+@keyframes waveMove{
+    from{
+        transform:translateX(0);
+    }
+    to{
+        transform:translateX(-50%);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="title">
+    CHARACTER SELECT
+</div>
+
+<div class="characterContainer" id="characterContainer">
+
+    <div class="characterCard selected">
+        <div class="characterIcon">💙</div>
+        <div class="characterName">SONIC</div>
+    </div>
+
+    <div class="characterCard">
+        <div class="characterIcon">🧡</div>
+        <div class="characterName">TAILS</div>
+    </div>
+
+    <div class="characterCard">
+        <div class="characterIcon">❤️</div>
+        <div class="characterName">KNUCKLES</div>
+    </div>
+
+    <div class="characterCard">
+        <div class="characterIcon">🖤</div>
+        <div class="characterName">SHADOW</div>
+    </div>
+
+    <div class="characterCard">
+        <div class="characterIcon">🤍</div>
+        <div class="characterName">SILVER</div>
+    </div>
+
+</div>
+
+<div class="infoText" id="infoText">
+    Use Arrow Keys or Controller Stick
+</div>
+
+<div class="water">
+    <div class="wave"></div>
+    <div class="wave"></div>
+</div>
+
+<script>
+
+/* =========================
+   CHARACTER SELECT SYSTEM
+========================= */
+
+const cards =
+    document.querySelectorAll(".characterCard");
+
+const infoText =
+    document.getElementById("infoText");
+
+const characterNames = [
+    "SONIC",
+    "TAILS",
+    "KNUCKLES",
+    "SHADOW",
+    "SILVER"
+];
+
+let selectedIndex = 0;
+
+/* =========================
+   UPDATE SELECTION
+========================= */
+
+function updateSelection(){
+
+    cards.forEach(card => {
+        card.classList.remove("selected");
+    });
+
+    cards[selectedIndex]
+        .classList.add("selected");
+
+    infoText.innerHTML =
+        "Selected: " +
+        characterNames[selectedIndex];
+}
+
+/* =========================
+   MOVE RIGHT
+========================= */
+
+function moveRight(){
+
+    selectedIndex++;
+
+    if(selectedIndex >= cards.length){
+        selectedIndex = 0;
+    }
+
+    updateSelection();
+}
+
+/* =========================
+   MOVE LEFT
+========================= */
+
+function moveLeft(){
+
+    selectedIndex--;
+
+    if(selectedIndex < 0){
+        selectedIndex = cards.length - 1;
+    }
+
+    updateSelection();
+}
+
+/* =========================
+   CONFIRM CHARACTER
+========================= */
+
+function confirmCharacter(){
+
+    const chosenCharacter =
+        characterNames[selectedIndex];
+
+    infoText.innerHTML =
+        "Adventure Begins with " +
+        chosenCharacter + "!";
+
+    console.log(
+        "Selected Character:",
+        chosenCharacter
+    );
+
+    // LATER:
+    // window.location.href = "level1.html";
+}
+
+/* =========================
+   KEYBOARD CONTROLS
+========================= */
+
+document.addEventListener("keydown", (event) => {
+
+    if(event.key === "ArrowRight"){
+        moveRight();
+    }
+
+    if(event.key === "ArrowLeft"){
+        moveLeft();
+    }
+
+    if(event.key === "Enter"){
+        confirmCharacter();
+    }
+
+});
+
+/* =========================
+   GAMEPAD SUPPORT
+========================= */
+
+let canMove = true;
+
+function updateGamepad(){
+
+    const gamepads =
+        navigator.getGamepads();
+
+    if(gamepads[0]){
+
+        const gp = gamepads[0];
+
+        const stickX = gp.axes[0];
+
+        /* MOVE RIGHT */
+        if(stickX > 0.5 && canMove){
+
+            moveRight();
+
+            canMove = false;
+        }
+
+        /* MOVE LEFT */
+        if(stickX < -0.5 && canMove){
+
+            moveLeft();
+
+            canMove = false;
+        }
+
+        /* RESET */
+        if(Math.abs(stickX) < 0.25){
+
+            canMove = true;
+        }
+
+        /* A BUTTON */
+        if(gp.buttons[0].pressed){
+
+            confirmCharacter();
+        }
+
+    }
+
+    requestAnimationFrame(updateGamepad);
+}
+
+updateGamepad();
+
+</script>
+
+</body>
+</html>
