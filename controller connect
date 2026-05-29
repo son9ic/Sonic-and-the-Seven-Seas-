@@ -1,0 +1,169 @@
+<!-- CONTROLLER UI -->
+<div id="controllerStatus">
+    🎮 Searching for Controller...
+</div>
+
+<style>
+#controllerStatus{
+    position:absolute;
+    bottom:25px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:14px 28px;
+    background:rgba(0,0,0,0.55);
+    color:white;
+    font-size:24px;
+    border-radius:14px;
+    border:3px solid #ffffff55;
+    backdrop-filter:blur(4px);
+    text-shadow:2px 2px 4px black;
+}
+</style>
+
+<script>
+
+/*
+========================================
+SONIC AND THE SEVEN SEAS
+CONTROLLER CONNECTION SYSTEM
+========================================
+*/
+
+let connectedGamepad = null;
+
+const statusText = document.getElementById("controllerStatus");
+
+/* =========================
+   DETECT CONTROLLER CONNECT
+========================= */
+window.addEventListener("gamepadconnected", (event) => {
+
+    connectedGamepad = event.gamepad;
+
+    console.log("Controller Connected:");
+    console.log(event.gamepad);
+
+    statusText.innerHTML =
+        "✅ Controller Connected: " +
+        event.gamepad.id;
+
+});
+
+/* =========================
+   DETECT CONTROLLER REMOVE
+========================= */
+window.addEventListener("gamepaddisconnected", (event) => {
+
+    connectedGamepad = null;
+
+    statusText.innerHTML =
+        "🎮 Controller Disconnected... Searching Again";
+
+});
+
+/* =========================
+   SEARCH FOR CONTROLLERS
+========================= */
+function scanForControllers(){
+
+    const gamepads = navigator.getGamepads();
+
+    for(let i = 0; i < gamepads.length; i++){
+
+        if(gamepads[i]){
+
+            connectedGamepad = gamepads[i];
+
+            statusText.innerHTML =
+                "✅ Controller Ready: " +
+                gamepads[i].id;
+
+        }
+    }
+}
+
+/* =========================
+   CONTROLLER INPUT LOOP
+========================= */
+function updateController(){
+
+    scanForControllers();
+
+    if(connectedGamepad){
+
+        const gp = navigator.getGamepads()[connectedGamepad.index];
+
+        if(gp){
+
+            /* =========================
+               BUTTONS
+            ========================= */
+
+            // A Button / Cross Button
+            if(gp.buttons[0].pressed){
+
+                console.log("Jump Button Pressed");
+
+            }
+
+            // B Button / Circle
+            if(gp.buttons[1].pressed){
+
+                console.log("Boost Button Pressed");
+
+            }
+
+            // START BUTTON
+            if(gp.buttons[9] && gp.buttons[9].pressed){
+
+                console.log("START GAME");
+
+                startGame();
+            }
+
+            /* =========================
+               ANALOG STICK
+            ========================= */
+
+            let moveX = gp.axes[0];
+            let moveY = gp.axes[1];
+
+            // DEADZONE
+            if(Math.abs(moveX) < 0.15) moveX = 0;
+            if(Math.abs(moveY) < 0.15) moveY = 0;
+
+            // DEBUG
+            if(moveX !== 0 || moveY !== 0){
+
+                console.log(
+                    "Move:",
+                    moveX.toFixed(2),
+                    moveY.toFixed(2)
+                );
+            }
+
+        }
+    }
+
+    requestAnimationFrame(updateController);
+}
+
+/* =========================
+   START SEARCHING
+========================= */
+updateController();
+
+</script>function startGame(){
+
+    statusText.innerHTML =
+        "🌊 Loading Adventure...";
+
+    // Change this later
+    // window.location.href = "worldmap.html";
+
+    setTimeout(() => {
+
+        alert("Welcome to Sonic and the Seven Seas!");
+
+    }, 800);
+}
