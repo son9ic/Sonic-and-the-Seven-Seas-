@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sonic and the Seven Seas</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    overflow:hidden;
+    font-family:Trebuchet MS, sans-serif;
+    background:#4bb7ff;
+}
+
+/* SKY */
+.sky{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:linear-gradient(to bottom,#67c7ff 0%,#9be7ff 40%,#e0fbff 100%);
+}
+
+/* OCEAN */
+.ocean{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:40%;
+    background:linear-gradient(to bottom,#1f8ed6,#006aa8);
+    overflow:hidden;
+}
+
+.wave{
+    position:absolute;
+    width:200%;
+    height:120px;
+    background:rgba(255,255,255,0.15);
+    border-radius:45%;
+    animation:waveMove 10s linear infinite;
+}
+
+.wave:nth-child(1){
+    top:-30px;
+}
+
+.wave:nth-child(2){
+    top:20px;
+    animation-duration:16s;
+    opacity:0.5;
+}
+
+@keyframes waveMove{
+    from{
+        transform:translateX(0);
+    }
+    to{
+        transform:translateX(-50%);
+    }
+}
+
+/* SHIP */
+.ship{
+    position:absolute;
+    bottom:22%;
+    left:50%;
+    transform:translateX(-50%);
+    width:420px;
+    height:220px;
+    animation:boatFloat 4s ease-in-out infinite;
+}
+
+@keyframes boatFloat{
+    0%{ transform:translateX(-50%) translateY(0px) rotate(0deg); }
+    50%{ transform:translateX(-50%) translateY(-10px) rotate(1deg); }
+    100%{ transform:translateX(-50%) translateY(0px) rotate(0deg); }
+}
+
+/* BOAT */
+.boat{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:90px;
+    background:#7a4a21;
+    border-radius:0 0 120px 120px;
+    border-bottom:12px solid #4e2d10;
+}
+
+.boat::before{
+    content:"";
+    position:absolute;
+    top:-18px;
+    left:0;
+    width:100%;
+    height:20px;
+    background:#9b6230;
+    border-radius:10px;
+}
+
+/* MAST */
+.mast{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:70px;
+    width:18px;
+    height:120px;
+    background:#6e3c17;
+}
+
+/* ROPE */
+.rope{
+    position:absolute;
+    width:6px;
+    height:110px;
+    background:#d2b48c;
+    left:57%;
+    top:5px;
+    transform:rotate(15deg);
+}
+
+/* SONIC PIRATE */
+.sonic{
+    position:absolute;
+    right:90px;
+    top:10px;
+    width:90px;
+    height:140px;
+}
+
+/* BODY */
+.body{
+    position:absolute;
+    bottom:0;
+    left:25px;
+    width:45px;
+    height:70px;
+    background:#0d4cff;
+    border-radius:20px;
+}
+
+/* HEAD */
+.head{
+    position:absolute;
+    top:10px;
+    left:10px;
+    width:70px;
+    height:70px;
+    background:#0d4cff;
+    border-radius:50%;
+}
+
+/* EARS */
+.ear1, .ear2{
+    position:absolute;
+    width:20px;
+    height:35px;
+    background:#0d4cff;
+}
+
+.ear1{
+    left:8px;
+    top:-10px;
+    transform:rotate(-30deg);
+}
+
+.ear2{
+    right:8px;
+    top:-10px;
+    transform:rotate(30deg);
+}
+
+/* BANDANA */
+.bandana{
+    position:absolute;
+    top:18px;
+    left:8px;
+    width:54px;
+    height:15px;
+    background:#b40000;
+    border-radius:10px;
+}
+
+.bandana::after{
+    content:"";
+    position:absolute;
+    right:-12px;
+    top:5px;
+    width:18px;
+    height:8px;
+    background:#b40000;
+    transform:rotate(25deg);
+}
+
+/* EYE */
+.eye{
+    position:absolute;
+    top:35px;
+    left:18px;
+    width:35px;
+    height:12px;
+    background:white;
+    border-radius:20px;
+}
+
+/* SMILE */
+.smile{
+    position:absolute;
+    bottom:15px;
+    left:25px;
+    width:22px;
+    height:10px;
+    border-bottom:4px solid black;
+    border-radius:0 0 20px 20px;
+}
+
+.tooth{
+    position:absolute;
+    bottom:-2px;
+    right:-2px;
+    width:5px;
+    height:5px;
+    background:gold;
+}
+
+/* PRIME WATER BOOTS */
+.boot1,.boot2{
+    position:absolute;
+    bottom:-8px;
+    width:18px;
+    height:30px;
+    background:#1ec8ff;
+    border-radius:10px;
+    box-shadow:0 0 12px #58e0ff;
+}
+
+.boot1{ left:18px; }
+.boot2{ right:18px; }
+
+/* TITLE */
+.title{
+    position:absolute;
+    top:40px;
+    width:100%;
+    text-align:center;
+    color:white;
+    text-shadow:
+        4px 4px 0 #003f75,
+        8px 8px 10px rgba(0,0,0,0.4);
+}
+
+.title h1{
+    font-size:64px;
+    letter-spacing:3px;
+    font-weight:900;
+}
+
+/* STEERING WHEEL O */
+.wheel{
+    display:inline-block;
+    width:52px;
+    height:52px;
+    border:8px solid #8b5a2b;
+    border-radius:50%;
+    position:relative;
+    top:8px;
+    margin:0 4px;
+}
+
+.wheel::before,
+.wheel::after{
+    content:"";
+    position:absolute;
+    background:#8b5a2b;
+}
+
+.wheel::before{
+    width:6px;
+    height:52px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.wheel::after{
+    width:52px;
+    height:6px;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+/* PLAY BUTTON */
+.playButton{
+    position:absolute;
+    top:58%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    padding:22px 70px;
+    font-size:36px;
+    font-weight:bold;
+    border:none;
+    border-radius:18px;
+    background:linear-gradient(to bottom,#ffe066,#ffb300);
+    color:#5a2a00;
+    cursor:pointer;
+    box-shadow:0 8px 0 #b56d00;
+    transition:0.15s;
+}
+
+.playButton:hover{
+    transform:translate(-50%,-50%) scale(1.08);
+}
+
+.playButton:active{
+    transform:translate(-50%,-50%) translateY(5px);
+    box-shadow:0 3px 0 #b56d00;
+}
+
+/* SUBTITLE */
+.subtitle{
+    position:absolute;
+    top:150px;
+    width:100%;
+    text-align:center;
+    color:white;
+    font-size:20px;
+    text-shadow:2px 2px 5px black;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sky"></div>
+
+<div class="title">
+    <h1>
+        S
+        <span class="wheel"></span>
+        NIC AND THE SEVEN SEAS
+    </h1>
+</div>
+
+<div class="subtitle">
+    A Storybook Adventure Between Secret Rings and Black Knight
+</div>
+
+<div class="ship">
+
+    <div class="mast"></div>
+    <div class="rope"></div>
+
+    <div class="sonic">
+        <div class="head">
+            <div class="ear1"></div>
+            <div class="ear2"></div>
+            <div class="bandana"></div>
+            <div class="eye"></div>
+            <div class="smile">
+                <div class="tooth"></div>
+            </div>
+        </div>
+
+        <div class="body"></div>
+
+        <div class="boot1"></div>
+        <div class="boot2"></div>
+    </div>
+
+    <div class="boat"></div>
+</div>
+
+<button class="playButton" onclick="startGame()">
+    PLAY
+</button>
+
+<div class="ocean">
+    <div class="wave"></div>
+    <div class="wave"></div>
+</div>
+
+<script>
+function startGame(){
+    alert("The adventure begins!");
+    
+    // Later you can change this to:
+    // window.location.href = "level1.html";
+}
+</script>
+
+</body>
+</html>
