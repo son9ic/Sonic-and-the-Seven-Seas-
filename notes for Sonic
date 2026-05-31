@@ -1,0 +1,11 @@
+/game
+  main.js
+  sonic.js
+  input.js
+  assets.js
+  sprites/
+    idle/
+    run/
+    jump/
+    spindash/
+    wait/
