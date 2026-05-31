@@ -1,0 +1,108 @@
+export class GreenChaosEmerald {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+
+    this.baseY = y;
+    this.floatTimer = 0;
+
+    this.angle = 0;
+    this.spinSpeed = 0.055;
+
+    this.collected = false;
+
+    // slightly more “dynamic” hover than previous ones
+    this.hoverStrength = 10;
+  }
+
+  update(player) {
+    if (this.collected) return;
+
+    this.floatTimer += 0.07;
+    this.angle += this.spinSpeed;
+
+    // smoother bob + slightly larger motion
+    this.y = this.baseY + Math.sin(this.floatTimer) * this.hoverStrength;
+
+    // collision detection
+    const dx = player.x - this.x;
+    const dy = player.y - this.y;
+
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist < 42) {
+      this.collect();
+    }
+  }
+
+  collect() {
+    this.collected = true;
+
+    window.gameProgress = window.gameProgress || {
+      emeralds: {
+        blue: false,
+        yellow: false,
+        green: false,
+        red: false,
+        white: false,
+        cyan: false,
+        purple: false
+      }
+    };
+
+    window.gameProgress.emeralds.green = true;
+
+    console.log("💚 Green Chaos Emerald collected!");
+  }
+
+  draw(ctx) {
+    if (this.collected) return;
+
+    ctx.save();
+
+    // green aura glow
+    ctx.shadowColor = "lime";
+    ctx.shadowBlur = 28;
+
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+
+    // fallback gem shape
+    ctx.fillStyle = "limegreen";
+    ctx.beginPath();
+    ctx.moveTo(0, -16);
+    ctx.lineTo(14, 0);
+    ctx.lineTo(0, 16);
+    ctx.lineTo(-14, 0);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.restore();
+  }
+} 
+import { GreenChaosEmerald } from "./emerald_green.js";
+
+const greenEmerald = new GreenChaosEmerald(1050, 220);
+
+// update
+function update(player) {
+  greenEmerald.update(player);
+  player.update(input);
+}
+
+// draw
+function draw(ctx, sprites) {
+  greenEmerald.draw(ctx);
+  player.draw(ctx, sprites);
+} 
+window.gameProgress = {
+  emeralds: {
+    blue: true,
+    yellow: true,
+    green: true,
+    red: false,
+    white: false,
+    cyan: false,
+    purple: false
+  }
+};
