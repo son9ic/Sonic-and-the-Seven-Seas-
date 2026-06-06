@@ -1,0 +1,106 @@
+export class WhiteChaosEmerald {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+
+    this.baseY = y;
+    this.floatTimer = 0;
+
+    this.angle = 0;
+    this.spinSpeed = 0.04;
+
+    this.collected = false;
+
+    this.hoverStrength = 14;
+  }
+
+  update(player) {
+    if (this.collected) return;
+
+    this.floatTimer += 0.05;
+    this.angle += this.spinSpeed;
+
+    // Floating effect
+    this.y = this.baseY + Math.sin(this.floatTimer) * this.hoverStrength;
+
+    const dx = player.x - this.x;
+    const dy = player.y - this.y;
+
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance < 42) {
+      this.collect();
+    }
+  }
+
+  collect() {
+    this.collected = true;
+
+    window.gameProgress = window.gameProgress || {
+      emeralds: {
+        blue: true,
+        yellow: true,
+        green: true,
+        red: true,
+        white: true,
+        cyan: false,
+        purple: false
+      }
+    };
+
+    window.gameProgress.emeralds.white = true;
+
+    console.log("🤍 White Chaos Emerald collected!");
+
+    // Optional visual effect
+    this.flashScreen();
+  }
+
+  flashScreen() {
+    console.log("✨ White Emerald Energy Burst!");
+  }
+
+  draw(ctx) {
+    if (this.collected) return;
+
+    ctx.save();
+
+    ctx.shadowColor = "white";
+    ctx.shadowBlur = 40;
+
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+
+    ctx.fillStyle = "white";
+
+    ctx.beginPath();
+    ctx.moveTo(0, -18);
+    ctx.lineTo(16, 0);
+    ctx.lineTo(0, 18);
+    ctx.lineTo(-16, 0);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.restore();
+  }
+} 
+import { WhiteChaosEmerald } from "./white_emerald.js";
+
+const whiteEmerald = new WhiteChaosEmerald(1800, 180);
+
+function update(player) {
+  whiteEmerald.update(player);
+}
+
+function draw(ctx) {
+  whiteEmerald.draw(ctx);
+} 
+window.gameProgress.emeralds = {
+  blue: true,
+  yellow: true,
+  green: true,
+  red: true,
+  white: true,
+  cyan: false,
+  purple: false
+};
